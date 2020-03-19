@@ -1,9 +1,13 @@
-Voracious
+Master ielts vocabulary
 =========
 
-Voracious is a chrome extension that displays definitions of tough words. Inspired by [Kindle Word-Wise](https://www.amazon.com/gp/feature.html?ie=UTF8&docId=1002989731)
-
-[How I went about it](https://medium.com/@sanchitgn/porting-kindle-word-wise-to-the-browser-7e21e04d066c)
+Master ielts vocabulary is a chrome extension that displays definitions of tough words. <br>
+Inspired by <li> [Kindle Word-Wise](https://www.amazon.com/gp/feature.html?ie=UTF8&docId=1002989731) </li>
+            <li> [Voracious](https://github.com/sanchitgn/voracious) </li>
+<br>            
+Build new dictionary by collect vocabulary from book "Boost Vocabulary by Dinh Thang"
+<br>
+Build this app for my wife could learn new vocabularies as a IELTS preparation step.
 
 ## Installation:
 
