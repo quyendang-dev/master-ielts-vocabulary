@@ -8,7 +8,7 @@ const ARTICLE_SELECTOR = ['article', '.article', 'section', '.articles', '.artic
 
 const displayedDefinitions = {};
 
-const isToughWord = word => dictionary[word.toLowerCase()] && getWordDifficulty(word) >= DIFFICULTY_THRESHOLD;
+const isToughWord = word => dictionary[word.toLowerCase()];
 
 const lookupDefinition = word => dictionary[word.toLowerCase()].definition;
 
@@ -27,7 +27,7 @@ const compose = f => g => x => f(g(x))
 const getDefinition = compose(overflowText)(lookupDefinition);
 
 const annotateToughWord = word => {
-    if(isToughWord(word) && !displayedDefinitions[word]) {
+    if(!displayedDefinitions[word]) {
       displayedDefinitions[word] = true;
       return `<ruby class="annotation">${word}<rt>${getDefinition(word)}</rt></ruby>`;
     }

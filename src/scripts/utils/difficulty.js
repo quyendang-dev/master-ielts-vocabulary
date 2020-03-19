@@ -7,7 +7,8 @@
 const fs = require('fs');
 const axios = require('axios');
 const cheerio = require('cheerio');
-
+// const Papa = require('papaparse');
+const csv = require('csv-parser');
 const notFound = {};
 
 const getDifficulty = word => {
@@ -29,8 +30,11 @@ const delay = () => new Promise((resolve, reject) => {
 })
 
 const readFile = file => new Promise((resolve, reject) => {
-  fs.readFile(file, (err ,data) => {
-    if(err) reject(err);
+  fs.readFile(file,"utf8", (err ,data) => {
+    if(err) { 
+      console.log(err);  
+      reject(err);
+    }
     resolve(data);
   })
 })
@@ -42,27 +46,42 @@ const writeFile = (file, data) => new Promise((resolve, reject) => {
   });
 })
 
-async function init() {
-  const data = await readFile('words.json');
+const readCSVFile = file => new Promise((resolve, reject) => {
+  const results = [];
+  fs.createReadStream(file)
+    .pipe(csv({ separator: '\t' }))
+    .on('data', (data) => results.push(data))
+    .on('error', (err) => { reject(err) })
+    .on('end', () => {
+      resolve(results);
+    })
+})
 
-  const dictionary = JSON.parse(data);
+async function init() {
+  const words = await readCSVFile('words.csv');
+  
+  // console.log(data);
+  // const dictionary = Papa.parse(data);
+  // const dictionary = JSON.parse(data);
   const dictionaryWithDifficulty = {};
 
-  const words = Object.keys(dictionary);
+  // const words = Object.keys(data);
+  // data.forEach(w => console.log(w));
 
   for(word of words) {
+    console.log(word);
     try {
-      const difficulty = await getDifficulty(word);
-      console.log({ word, difficulty });
-      dictionaryWithDifficulty[word] = { definition: dictionary[word], difficulty: parseInt(difficulty) }
-      await delay();
+      // const difficulty = await getDifficulty(word.word);
+      // console.log({ word, difficulty });
+      dictionaryWithDifficulty[word['word']] = { definition: word['definition'], source: "Vocab" }
+      // await delay();
     }
     catch(err) {
       console.log(`Could not find word ${word}`);
       notFound[word] = true;
 
-      // Add default difficulty
-      dictionaryWithDifficulty[word] = { definition: dictionary[word], difficulty: 50 }
+      // // Add default difficulty
+      // dictionaryWithDifficulty[word] = { definition: dictionary[word], difficulty: 50 }
     }
   }
 
